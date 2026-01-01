@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commandes Disponibles - SpeedDelivery</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar Livreur -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top shadow-sm">
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand" href="dashboard-livreur.html">
+                <i class="bi bi-box-seam-fill me-2"></i>SpeedDelivery
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard-livreur.html">
+                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold" href="#">
+                            <i class="bi bi-search me-1"></i> Trouver des commandes
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <div class="avatar-circle">L</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container dashboard-container">
+
+        <div class="row align-items-center mb-4">
+            <div class="col-md-7">
+                <h2 class="fw-bold mb-1">Marché des livraisons</h2>
+                <p class="text-muted mb-0">Trouvez des missions autour de vous.</p>
+            </div>
+            <div class="col-md-5 mt-3 mt-md-0 d-flex gap-2 justify-content-md-end">
+                <div class="input-group shadow-sm w-auto">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-geo-alt"></i></span>
+                    <input type="text" class="form-control border-start-0" placeholder="Ma position" value="Paris, FR"
+                        style="max-width: 120px;">
+                </div>
+                <select class="form-select w-auto shadow-sm" id="sortOrder">
+                    <option value="recent">Plus récentes</option>
+                    <option value="urgent">Urgence</option>
+                    <option value="distance">Distance</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Orders Grid -->
+        <div class="row" id="market-list">
+            <!-- JS Injected -->
+            <div class="col-12 py-5 text-center text-muted">Chargement...</div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/deliverer-market.js"></script>
+</body>
+
+</html>
