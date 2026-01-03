@@ -11,10 +11,11 @@ class utilisateurRepository
     public function save(string $nomComplet, string  $email,  string $password,string $role, bool $active): bool
     {
         $pdo = DatabaseConnect::getConnexion();
+        $passHach = password_hash($password, PASSWORD_DEFAULT);
         $sql = "INSERT INTO utilisateurs (nom_complet, email,password, role, active) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
 
-        return $stmt->execute([$nomComplet,$email, $password, $role, $active]);
+        return $stmt->execute([$nomComplet,$email, $passHach, $role, $active]);
     }
 
     public function findAll() : array {
@@ -24,6 +25,24 @@ class utilisateurRepository
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function findById(int $id) : ?array
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT * FROM utilisateurs WHERE id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function findByEmail(string $email) : ?array
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT * FROM utilisateurs WHERE email = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$email]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function update(string $nomComplet, string  $email,string  $password,  string $role,bool $active, int  $id) : bool
     {
         $pdo = DatabaseConnect::getConnexion();

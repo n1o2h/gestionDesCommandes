@@ -30,7 +30,8 @@ class LivreurRepository
         $sql = "SELECT * FROM livreurs WHERE id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$livreurId]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
 
     public function findByUtilisateurId(int $utilisateur_id): array | null
@@ -39,7 +40,8 @@ class LivreurRepository
         $sql = "SELECT u.*, l.id as Livreur_id FROM utilisateurs u JOIN livreurs l ON  u.id = l.utilisateur_id WHERE l.utilisateur_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$utilisateur_id]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
     public function delete(int $id): bool
     {

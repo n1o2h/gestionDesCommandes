@@ -7,13 +7,17 @@ class VehiculeRepository
 {
     private PDO $pdo;
 
-    public function save(string $type,string $description, int $livreurId) : string
+    public function save(string $type,string $description, int $livreurId) : bool
     {
         $pdo = DatabaseConnect::getConnexion();
+        $livreurExiste = $pdo->prepare("SELECT * FROM vehicules WHERE livreur_id = ?");
+        $livreurExiste->execute([$livreurId]);
+        if($livreurExiste->fetch()){
+          return false;
+        }
         $sql = "INSERT INTO vehicules (type, description, livreur_id) VALUES (?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$type, $description, $livreurId]);
-        return  'created ';
+        return $stmt->execute([$type, $description, $livreurId]);
     }
     public function findAll() : array {
         $pdo = DatabaseConnect::getConnexion();
@@ -29,7 +33,8 @@ class VehiculeRepository
         $sql = "SELECT * FROM vehicules WHERE id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
 
     public function update(string $type,string $descriptiont, int $id) : bool

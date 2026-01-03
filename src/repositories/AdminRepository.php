@@ -23,13 +23,14 @@ class AdminRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function findByAdminId( int $admintId): array | null
+    public function findById( int $admintId): array | null
     {
         $pdo = DatabaseConnect::getConnexion();
         $sql = "SELECT * FROM admins WHERE id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$admintId]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
 
     public function findByUtilisateurId(int $utilisateur_id): array | null
@@ -38,7 +39,8 @@ class AdminRepository
         $sql = "SELECT u.*, a.id as admin_id FROM utilisateurs u JOIN admins a ON  u.id = a.utilisateur_id WHERE a.utilisateur_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$utilisateur_id]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
     public function delete(int $id): bool
     {

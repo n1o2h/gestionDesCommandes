@@ -29,7 +29,8 @@ class ClientRepository
         $sql = "SELECT * FROM clients WHERE id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$clientId]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
 
     public function findByUtilisateurId(int $utilisateur_id): array | null
@@ -38,7 +39,8 @@ class ClientRepository
         $sql = "SELECT u.*, c.id as Client_id FROM utilisateurs u JOIN clients c ON  u.id = c.utilisateur_id WHERE c.utilisateur_id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$utilisateur_id]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
     public function delete(int $id): bool
     {

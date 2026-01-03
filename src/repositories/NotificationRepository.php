@@ -30,16 +30,29 @@ class NotificationRepository
         $sql = "SELECT * FROM notifications WHERE id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
 
-    public function findByIdAndType( int $id, string $type): array | bool
+    public function findByIdAndType( int $id, string $type): array | null
     {
         $pdo = DatabaseConnect::getConnexion();
         $sql = "SELECT * FROM notifications WHERE id = ? AND type = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id, $type]);
-        return $stmt->fetch();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ? $data: null;
+    }
+
+
+    public function findByUtilisateurId( int $utilisateurId): array | null
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT * FROM notifications WHERE utilisateur_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$utilisateurId]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ? $data: null;
     }
 
     public function update(string $type, string $message,DateTime $dateEnvoi, bool $lue, int $id) : bool

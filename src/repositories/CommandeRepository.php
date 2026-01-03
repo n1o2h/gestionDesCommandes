@@ -29,8 +29,21 @@ class CommandeRepository
         $sql = "SELECT * FROM commandes WHERE id = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$id]);
-        return $stmt->fetch();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
+
+    public function findByClientId( int $clientId): array | null
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT * FROM commandes WHERE client_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$clientId]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ? $data: null;
+    }
+
+
 
     public function update(string $description, string $etat, int $id) : bool
     {
