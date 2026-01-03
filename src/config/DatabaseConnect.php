@@ -32,7 +32,7 @@ class DatabaseConnect
                 die("Erreur de connexion à la BDD : " . $e->getMessage());
             }
         }
-        echo 'succes connesion';
+        #echo 'succes connesion';
         return  self::$instance;
     }
 }
