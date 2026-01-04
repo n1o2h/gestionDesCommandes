@@ -8,14 +8,15 @@ use PDO;
 class utilisateurRepository
 {
     private PDO $pdo;
-    public function save(string $nomComplet, string  $email,  string $password,string $role, bool $active): bool
+    public function save(string $nomComplet, string  $email,  string $password, string $role, bool $active): int
     {
         $pdo = DatabaseConnect::getConnexion();
-        $passHach = password_hash($password, PASSWORD_DEFAULT);
+
         $sql = "INSERT INTO utilisateurs (nom_complet, email,password, role, active) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-
-        return $stmt->execute([$nomComplet,$email, $passHach, $role, $active]);
+        $stmt->execute([$nomComplet,$email, $password, $role, $active]);
+        $idUser = $pdo->lastInsertId();
+        return $idUser;
     }
 
     public function findAll() : array {
@@ -34,13 +35,14 @@ class utilisateurRepository
         $stmt->execute([$id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function findByEmail(string $email) : ?array
+    public function findByEmail(string $email) : array | null
     {
         $pdo = DatabaseConnect::getConnexion();
         $sql = "SELECT * FROM utilisateurs WHERE email = ?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$email]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $stmt->fetch();
+        return $data ? $data: null;
     }
 
     public function update(string $nomComplet, string  $email,string  $password,  string $role,bool $active, int  $id) : bool

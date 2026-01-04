@@ -8,13 +8,13 @@ class LivreurRepository
 {
     private PDO $pdo;
 
-    public function save(float $noteMoyenne,int $utilisateurId) : string
+    public function save(float $noteMoyenne,int $utilisateurId) : bool
     {
         $pdo = DatabaseConnect::getConnexion();
         $sql = "INSERT INTO livreurs (note_moyenne,utilisateur_id) VALUES (?,?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$noteMoyenne,$utilisateurId]);
-        return  'created ';
+        return $stmt->execute([$noteMoyenne,$utilisateurId]);
+
     }
     public function findAll() : array {
         $pdo = DatabaseConnect::getConnexion();
