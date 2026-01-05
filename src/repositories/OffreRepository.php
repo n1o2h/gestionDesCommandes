@@ -8,7 +8,7 @@ class OffreRepository
 {
     private PDO $pdo;
 
-    public function save(string $prix, DateTime $dureEstime,int $commandeId, int $livreurId, int $vehiculeId) : bool
+    public function save(string $prix, DateTime $dureEstime,int $commandeId, int $livreurId, int $vehiculeId) : int
     {
         $pdo = DatabaseConnect::getConnexion();
         if(!is_float($prix)){
@@ -17,7 +17,8 @@ class OffreRepository
 
         $sql = "INSERT INTO offres (prix, dure_estime, commande_id,livreur_id,vehicule_id) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        return $stmt->execute([$prix, $dureEstime->format('Y-m-d H:i:s'), $commandeId, $livreurId, $vehiculeId]);
+        $stmt->execute([$prix, $dureEstime->format('Y-m-d H:i:s'), $commandeId, $livreurId, $vehiculeId]);
+        return $pdo->lastInsertId();
     }
     public function findAll() : array {
         $pdo = DatabaseConnect::getConnexion();

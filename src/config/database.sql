@@ -34,6 +34,7 @@ CREATE TABLE commandes (
       id INT PRIMARY KEY AUTO_INCREMENT,
       description VARCHAR(150),
       etat VARCHAR(50) NOT NULL,
+      is_delete  INT DEFAULT 0,
       client_id INT NOT NULL,
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
 )ENGINE=INNODB;

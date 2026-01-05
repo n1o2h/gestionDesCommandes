@@ -14,7 +14,8 @@ class utilisateurRepository
 
         $sql = "INSERT INTO utilisateurs (nom_complet, email,password, role, active) VALUES (?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$nomComplet,$email, $password, $role, $active]);
+        var_dump($active);
+        $stmt->execute([$nomComplet,$email, $password, $role,(int) $active]);
         $idUser = $pdo->lastInsertId();
         return $idUser;
     }

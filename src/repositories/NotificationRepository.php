@@ -54,6 +54,15 @@ class NotificationRepository
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data ? $data: null;
     }
+    public function findByClientId(int $utilisateurId) :  array | null
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT * FROM notifications  WHERE utilisateur_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$utilisateurId]);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ? $data: null;
+    }
 
     public function update(string $type, string $message,DateTime $dateEnvoi, bool $lue, int $id) : bool
     {

@@ -53,7 +53,7 @@ class validator
 
     public static function validateEtatCommande(string $etat): void
     {
-        $etats = ['Créée','En attente','En cours','Expédiée','Terminée','Annulée'];
+        $etats = ['Créé','En attente','En cours','Expédiée','Terminée','Annulée'];
         if(!in_array($etat, $etats)){
             throw new validationException("Etat de commande invalide");
         }
@@ -74,6 +74,15 @@ class validator
         $stmt->execute([$id]);
         if(!$stmt->fetch()){
             throw new validationException("Livreur inexistant");
+        }
+    }
+
+    public static function validateExistingCommande(int $id, $pdo) : void
+    {
+        $stmt = $pdo->prepare("SELECT id FROM commandes WHERE id = ?");
+        $stmt->execute([$id]);
+        if(!$stmt->fetch()){
+            throw new validationException("commande inexistant");
         }
     }
 

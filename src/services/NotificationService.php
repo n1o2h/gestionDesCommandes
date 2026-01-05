@@ -13,6 +13,9 @@ class NotificationService
 
     public function create(string $type, string $message, int $userId, $date = null) : int
     {
+        validator::validateText($type, 255, "Type de notificatation");
+        validator::validateText($message, 255, "Message de notification");
+        return 1;
 
     }
 
