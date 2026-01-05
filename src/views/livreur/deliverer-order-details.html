@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Mission - SpeedDelivery</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar Livreur -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top shadow-sm">
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand" href="dashboard-livreur.html">
+                <i class="bi bi-box-seam-fill me-2"></i>SpeedDelivery
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="deliverer-market.html">
+                            <i class="bi bi-arrow-left me-1"></i> Retour aux commandes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container dashboard-container">
+
+        <div class="row g-4">
+
+            <!-- Left: Order Info -->
+            <div class="col-lg-6">
+                <!-- Info Card -->
+                <div class="card card-custom p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold mb-0">Mission #CMD-104</h4>
+                        <span class="badge bg-primary-custom">Nouveau</span>
+                    </div>
+
+                    <div
+                        class="timeline-simple mb-4 ps-4 border-start border-2 border-secondary border-opacity-25 position-relative">
+                        <div class="mb-5 position-relative">
+                            <div class="position-absolute start-0 top-0 translate-middle rounded-circle bg-primary-custom shadow-sm border border-white"
+                                style="width: 16px; height: 16px; margin-left: -25px; margin-top: 4px;"></div>
+                            <small class="text-muted d-block text-uppercase fw-bold mb-1"
+                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Ramassage</small>
+                            <p class="mb-0 fw-bold fs-5 text-dark">Paris 08, Champs-Élysées</p>
+                            <small class="text-muted"><i class="bi bi-key me-1"></i>Code porte: 1234A</small>
+                        </div>
+                        <div class="position-relative">
+                            <div class="position-absolute start-0 top-0 translate-middle rounded-circle bg-danger shadow-sm border border-white"
+                                style="width: 16px; height: 16px; margin-left: -25px; margin-top: 4px;"></div>
+                            <small class="text-muted d-block text-uppercase fw-bold mb-1"
+                                style="font-size: 0.75rem; letter-spacing: 0.5px;">Livraison</small>
+                            <p class="mb-0 fw-bold fs-5 text-dark">Paris 17, Ternes</p>
+                            <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Remettre à l'accueil</small>
+                        </div>
+                    </div>
+
+                    <div class="bg-light p-3 rounded mb-3">
+                        <h6 class="fw-bold mb-2"><i class="bi bi-box me-2"></i>Contenu</h6>
+                        <p class="mb-0 text-muted">Documents urgents (Enveloppe A4)</p>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <span class="badge bg-danger rounded-pill"><i
+                                class="bi bi-lightning-fill me-1"></i>Urgent</span>
+                        <span class="badge bg-light text-dark border"><i class="bi bi-bicycle me-1"></i>2.4 km</span>
+                    </div>
+                </div>
+
+                <!-- Competitors (Blind) -->
+                <div class="card card-custom p-4">
+                    <h5 class="fw-bold mb-3">Autres offres en cours</h5>
+                    <div id="competitors-list">
+                        <!-- JS injected -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Make Offer Form -->
+            <div class="col-lg-6">
+                <div class="card card-custom p-4 border-0 shadow-lg position-sticky" style="top: 100px;">
+                    <div class="text-center mb-4">
+                        <div class="icon-box mx-auto bg-primary-custom text-white rounded-circle fs-3 mb-3"
+                            style="width:60px; height:60px;">
+                            <i class="bi bi-tag-fill"></i>
+                        </div>
+                        <h4 class="fw-bold">Envoyer une offre</h4>
+                        <p class="text-muted">Proposez votre meilleur tarif pour cette mission.</p>
+                    </div>
+
+                    <form id="offerForm">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted">Votre Prix (€)</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-white border-end-0"><i
+                                        class="bi bi-currency-euro"></i></span>
+                                <input type="number" step="0.50" min="5"
+                                    class="form-control border-start-0 ps-0 fw-bold" placeholder="0.00" required>
+                            </div>
+                            <div class="form-text">Incluez votre commission.</div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-muted">Durée estimée</label>
+                                <select class="form-select" required>
+                                    <option value="">Choisir...</option>
+                                    <option value="15">15 min</option>
+                                    <option value="30">30 min</option>
+                                    <option value="45">45 min</option>
+                                    <option value="60">1h +</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small text-muted">Véhicule</label>
+                                <select class="form-select" required>
+                                    <option value="">Choisir...</option>
+                                    <option value="bicycle">Vélo</option>
+                                    <option value="scooter">Scooter / Moto</option>
+                                    <option value="car">Voiture</option>
+                                    <option value="van">Fourgon</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold small text-muted mb-2">Options incluses</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="insurance" checked>
+                                <label class="form-check-label" for="insurance">Assurance livraison de base</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="contactless">
+                                <label class="form-check-label" for="contactless">Livraison sans contact</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom w-100 py-3 shadow-lg fw-bold">
+                            Envoyer l'offre
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/deliverer-order-details.js"></script>
+</body>
+
+</html>

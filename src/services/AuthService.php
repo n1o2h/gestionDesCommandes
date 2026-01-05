@@ -26,7 +26,7 @@ class AuthService
         }
 
         $passHash = password_hash($password, PASSWORD_DEFAULT);
-        $idUtilisateur  = $this->repo->save($nomComplet,$email, $passHash, 'client', true);
+        $idUtilisateur  = $this->repo->save($nomComplet,$email, $passHash, 'client', false);
 
         $clientRepo = new ClientRepository();
         if(!$clientRepo->save($idUtilisateur)){

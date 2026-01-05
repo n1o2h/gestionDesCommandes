@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Utilisateurs - SpeedAdmin</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar Admin (Light Theme) -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top shadow-sm">
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand" href="dashboard-admin.html">
+                <i class="bi bi-box-seam-fill me-2"></i>SpeedAdmin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard-admin.html">
+                            <i class="bi bi-speedometer2 me-1"></i> Vue d'ensemble
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="admin-users.html">
+                            <i class="bi bi-people me-1"></i> Utilisateurs
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                            data-bs-toggle="dropdown">
+                            <div class="avatar-circle me-2">
+                                <span id="user-initials">AD</span>
+                            </div>
+                            <span class="d-none d-lg-inline fw-bold" id="user-name">Admin</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg animate-slide-in">
+                            <li><a class="dropdown-item" href="../utils/profile.html"><i class="bi bi-person me-2"></i>Mon
+                                    Profil</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="../auth/index.html"><i
+                                        class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container dashboard-container">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">Gestion des utilisateurs</h3>
+            <button class="btn btn-primary-custom btn-sm" onclick="openUserModal()"><i
+                    class="bi bi-plus-lg me-2"></i>Ajouter</button>
+        </div>
+
+        <div class="card card-custom p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-light btn-sm fw-bold border text-primary-custom">Tous</button>
+                    <button class="btn btn-light btn-sm border">Clients</button>
+                    <button class="btn btn-light btn-sm border">Livreurs</button>
+                </div>
+                <div class="input-group input-group-sm w-auto">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="userSearch" placeholder="Rechercher...">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-custom align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Utilisateur</th>
+                            <th>Rôle</th>
+                            <th>Date inscription</th>
+                            <th>Statut</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <!-- JS Injected -->
+                        <tr>
+                            <td colspan="6" class="text-center">Chargement...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                <small class="text-muted">Affichage de 1-5 sur 5 utilisateurs</small>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled"><a class="page-link" href="#">Préc.</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Suiv.</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalLabel">Ajouter un utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userForm">
+                        <input type="hidden" id="userId">
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">Nom complet</label>
+                            <input type="text" class="form-control" id="userName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="userEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userRole" class="form-label">Rôle</label>
+                            <select class="form-select" id="userRole" required>
+                                <option value="client">Client</option>
+                                <option value="livreur">Livreur</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary-custom" onclick="saveUser()">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/admin-users.js"></script>
+</body>
+
+</html>

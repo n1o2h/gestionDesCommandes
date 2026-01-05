@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - SpeedDelivery</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <style>
+        /* --- PAGE SPECIFIC STYLES --- */
+        body {
+            /* Fond animé ou dégradé doux */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 480px;
+            perspective: 1000px;
+        }
+
+        .card-custom-auth {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .auth-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        /* --- INPUT FIELD DESIGN (Floating Label + Icon) --- */
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group-custom .form-control {
+            height: 55px;
+            padding: 15px 15px 5px 50px;
+            /* Space for icon */
+            border: 2px solid #eee;
+            border-radius: 12px;
+            background-color: #f9f9f9;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .input-group-custom .form-control:focus {
+            background-color: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.1);
+        }
+
+        /* Label Styling */
+        .input-group-custom label {
+            position: absolute;
+            left: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 15px;
+            pointer-events: none;
+            transition: all 0.2s ease;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Icon Styling */
+        .input-group-custom .icon-wrapper {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            font-size: 18px;
+            transition: color 0.3s ease;
+            z-index: 5;
+        }
+
+        /* Floating Effect Logic */
+        .input-group-custom .form-control:focus~label,
+        .input-group-custom .form-control:not(:placeholder-shown)~label {
+            top: 12px;
+            font-size: 11px;
+            color: var(--primary-color);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .input-group-custom .form-control:focus~.icon-wrapper {
+            color: var(--primary-color);
+        }
+
+        /* --- ROLE SELECTOR --- */
+        .role-selector-container {
+            background: #f1f3f9;
+            padding: 5px;
+            border-radius: 50px;
+            display: flex;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .role-option {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .role-option input {
+            display: none;
+        }
+
+        .role-option label {
+            display: block;
+            padding: 10px 0;
+            cursor: pointer;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #888;
+            transition: all 0.3s ease;
+        }
+
+        .role-option input:checked+label {
+            background-color: var(--white);
+            color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-wrapper">
+        <div class="card-custom-auth">
+
+            <div class="text-center mb-4">
+                <div class="auth-logo">
+                    <i class="bi bi-box-seam-fill"></i>
+                </div>
+                <h3 class="fw-bold text-dark">Bon retour !</h3>
+                <p class="text-muted small">Connectez-vous pour gérer vos livraisons.</p>
+            </div>
+
+            <form id="loginForm">
+
+                <!-- Role Selector -->
+                <div class="role-selector-container">
+                    <div class="role-option">
+                        <input type="radio" name="role" id="roleClient" value="client" checked>
+                        <label for="roleClient">Client</label>
+                    </div>
+                    <div class="role-option">
+                        <input type="radio" name="role" id="roleLivreur" value="livreur">
+                        <label for="roleLivreur">Livreur</label>
+                    </div>
+                    <div class="role-option">
+                        <input type="radio" name="role" id="roleAdmin" value="admin">
+                        <label for="roleAdmin">Admin</label>
+                    </div>
+                </div>
+                <!-- Hidden Select for existing JS compatibility -->
+                <select id="roleSelector" class="d-none">
+                    <option value="client">client</option>
+                    <option value="livreur">livreur</option>
+                    <option value="admin">admin</option>
+                </select>
+
+                <!-- Custom Input: Email -->
+                <div class="input-group-custom">
+                    <!-- Important: placeholder must be ' ' for :placeholder-shown trick -->
+                    <input type="email" class="form-control" id="email" placeholder=" " required autocomplete="off">
+                    <label for="email">Adresse Email</label>
+                    <div class="icon-wrapper">
+                        <i class="bi bi-envelope-fill"></i>
+                    </div>
+                </div>
+
+                <!-- Custom Input: Password -->
+                <div class="input-group-custom">
+                    <input type="password" class="form-control" id="password" placeholder=" " required>
+                    <label for="password">Mot de passe</label>
+                    <div class="icon-wrapper">
+                        <i class="bi bi-lock-fill"></i>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label text-muted small" for="rememberMe">
+                            Se souvenir
+                        </label>
+                    </div>
+                    <a href="forgot-password.html" class="small text-primary-custom text-decoration-none fw-bold">Mot de
+                        passe oublié ?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary-custom w-100 py-3 shadow-lg mb-3">
+                    Se connecter <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+
+                <div class="text-center pt-2">
+                    <span class="text-muted small">Pas encore inscrit ?</span>
+                    <a href="register.html" class="text-primary-custom fw-bold text-decoration-none ms-1">Créer un
+                        compte</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="index.html" class="text-muted small text-decoration-none opacity-75 hover-opacity-100">
+                <i class="bi bi-arrow-left me-1"></i> Retour à l'accueil
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script>
+        // Compatibility Script for Role Selector
+        const roleRadios = document.querySelectorAll('input[name="role"]');
+        const roleSelect = document.getElementById('roleSelector');
+
+        roleRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                roleSelect.value = e.target.value;
+                // Optional: Add visual feedback logic here if needed beyond CSS
+            });
+        });
+    </script>
+</body>
+
+</html>

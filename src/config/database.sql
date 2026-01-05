@@ -8,7 +8,7 @@ CREATE TABLE utilisateurs(
       email VARCHAR(150) NOT NULL UNIQUE,
       password VARCHAR(255) NOT NULL,
       role ENUM("admin", "client", "livreur") NOT NULL,
-      active BOOLEAN DEFAULT FAL
+      active BOOLEAN DEFAULT FALSE
 )ENGINE=INNODB;
 
 CREATE TABLE clients (
