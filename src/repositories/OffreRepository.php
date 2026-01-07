@@ -8,16 +8,13 @@ class OffreRepository
 {
     private PDO $pdo;
 
-    public function save(string $prix, DateTime $dureEstime,int $commandeId, int $livreurId, int $vehiculeId) : int
+    public function save(string $prix, DateTime $dureEstime,int $commandeId, int $livreurId, int $vehiculeId, string $etat) : int
     {
         $pdo = DatabaseConnect::getConnexion();
-        if(!is_float($prix)){
-            throw new \Exception("Le prix doit etre un float");
-        }
 
-        $sql = "INSERT INTO offres (prix, dure_estime, commande_id,livreur_id,vehicule_id) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO offres (prix, dure_estime, commande_id,livreur_id,vehicule_id, etat) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$prix, $dureEstime->format('Y-m-d H:i:s'), $commandeId, $livreurId, $vehiculeId]);
+        $stmt->execute([$prix, $dureEstime->format('Y-m-d H:i:s'), $commandeId, $livreurId, $vehiculeId, $etat]);
         return $pdo->lastInsertId();
     }
     public function findAll() : array {
@@ -54,6 +51,14 @@ class OffreRepository
         $stmt->execute([$livreurId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function findByLivreurIdAndCommandeId( int $commandeId, int $livreurId): array | null
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT * FROM offres WHERE commande_id = ? AND livreur_id= ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$commandeId, $livreurId]);
+        return $stmt->fetch();
+    }
 
     public function update(string $prix, DateTime $dureEstime, int $id) : bool
     {
@@ -70,4 +75,26 @@ class OffreRepository
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([$id]);
     }
+    public function updateEtat(int $offreId, string $etat): bool
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "UPDATE offres SET etat = ? WHERE id = ?";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([$etat, $offreId]);
+    }
+    public function refuseOthers(int $commandeId, int $offreId): bool
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "
+        UPDATE offres
+        SET etat = 'refusée'
+        WHERE commande_id = ?
+          AND id != ?
+          AND etat = 'en_attente'
+    ";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([$commandeId, $offreId]);
+    }
+
+
 }

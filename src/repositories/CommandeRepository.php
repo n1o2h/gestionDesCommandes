@@ -32,6 +32,15 @@ class CommandeRepository
         $data = $stmt->fetch();
         return $data ? $data: null;
     }
+    public function findByEtat(): array | null
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT * FROM commandes WHERE etat = 'Crée' OR etat = 'En_attente' AND is_delete = 0";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetch();
+        return $data ? $data: null;
+    }
 
     public function findByClientId( int $clientId): array | null
     {

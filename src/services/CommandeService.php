@@ -64,7 +64,7 @@ class CommandeService
         }
         if($commande['etat'] !== 'Accepter' || $commande['etat'] === 'annuler')
         {
-            throw new validationException("Impossible d'anuller cette commande c'est deja annuler ou bien Accepter ");
+            throw new validationException("Impossible d'anuller cette commande c'est deja annuler ou bien A ");
         }
         if($commande['is_delete'])
         {
@@ -72,6 +72,18 @@ class CommandeService
         }
         return $this->repo->cancel($commandeId, $clientId);
     }
+
+    public function getAll(): array
+    {
+        return $this->repo->findAll();
+    }
+
+    public function getById(int $commandeId): array|null
+    {
+        validator::validateExistingCommande($commandeId, DatabaseConnect::getConnexion());
+        return $this->repo->findById($commandeId);
+    }
+
 
 
 }

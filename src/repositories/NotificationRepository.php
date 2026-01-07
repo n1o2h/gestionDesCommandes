@@ -79,4 +79,11 @@ class NotificationRepository
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([$id]);
     }
+    public function estLue(int $id) : bool
+    {
+        $pdo = DatabaseConnect::getConnexion();
+        $sql = "UPDATE notifications SET est_lue = 1 WHERE id = ?";
+        $stmt = $pdo->prepare($sql);
+        return $stmt->execute([$id]);
+    }
 }

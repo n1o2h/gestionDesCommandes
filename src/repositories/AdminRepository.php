@@ -1,5 +1,7 @@
 <?php
+
 namespace App\repositories;
+
 use App\config\DatabaseConnect;
 use PDO;
 
@@ -7,46 +9,52 @@ class AdminRepository
 {
     private PDO $pdo;
 
-    public function save(int $utilisateurId) : string
+    public function __construct()
     {
-        $pdo = DatabaseConnect::getConnexion();
+        $this->pdo = DatabaseConnect::getConnexion();
+    }
+
+    public function save(int $utilisateurId) : int
+    {
         $sql = "INSERT INTO admins (utilisateur_id) VALUES (?)";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$utilisateurId]);
-        return  'created ';
-    }
-    public function findAll() : array {
-        $pdo = DatabaseConnect::getConnexion();
-        $sql = "SELECT * FROM admins";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return (int)$this->pdo->lastInsertId();
     }
 
-    public function findById( int $admintId): array | null
+    public function findAll() : array
     {
-        $pdo = DatabaseConnect::getConnexion();
+        $sql = "SELECT u.*, a.id AS admin_id
+                FROM admins a
+                JOIN utilisateurs u ON u.id = a.utilisateur_id";
+        return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findById(int $adminId): array | null
+    {
         $sql = "SELECT * FROM admins WHERE id = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$admintId]);
-        $data = $stmt->fetch();
-        return $data ? $data: null;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$adminId]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
     }
 
-    public function findByUtilisateurId(int $utilisateur_id): array | null
+    public function findByUtilisateurId(int $utilisateurId): array | null
     {
-        $pdo = DatabaseConnect::getConnexion();
-        $sql = "SELECT u.*, a.id as admin_id FROM utilisateurs u JOIN admins a ON  u.id = a.utilisateur_id WHERE a.utilisateur_id = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$utilisateur_id]);
-        $data = $stmt->fetch();
-        return $data ? $data: null;
+        $sql = "SELECT u.*, a.id AS admin_id
+                FROM utilisateurs u
+                JOIN admins a ON u.id = a.utilisateur_id
+                WHERE a.utilisateur_id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$utilisateurId]);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
     }
+
     public function delete(int $id): bool
     {
-        $pdo = DatabaseConnect::getConnexion();
         $sql = "DELETE FROM admins WHERE id = ?";
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([$id]);
     }
 }

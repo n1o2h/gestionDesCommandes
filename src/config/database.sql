@@ -53,6 +53,7 @@ CREATE TABLE offres (
       dure_estime DATETIME,
       commande_id INT NOT NULL,
       livreur_id INT NOT NULL,
+      etat VARCHAR(255) NOT NULL,
       vehicule_id INT,
       FOREIGN KEY (commande_id) REFERENCES commandes(id) ON DELETE CASCADE,
       FOREIGN KEY (livreur_id) REFERENCES livreurs(id) ON DELETE CASCADE,

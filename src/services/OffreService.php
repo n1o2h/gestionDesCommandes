@@ -2,37 +2,69 @@
 
 namespace App\services;
 
+use App\config\DatabaseConnect;
+use App\Exception\validationException;
+use App\repositories\CommandeRepository;
 use App\repositories\LivreurRepository;
+use App\repositories\NotificationRepository;
+use App\repositories\OffreRepository;
 use App\repositories\utilisateurRepository;
 use DateTime;
 
 class OffreService
 {
-    private OffreService $repo;
+    private OffreRepository $offreRepo;
+    private CommandeRepository $commandeRepo;
+    private LivreurRepository $livreurRepo;
+    private NotificationRepository $notifRepo;
+
     public function __construct()
     {
-        $this->repo = new OffreService();
+        $this->offreRepo = new OffreRepository();
+        $this->commandeRepo = new CommandeRepository();
+        $this->livreurRepo = new LivreurRepository();
+        $this->notifRepo = new NotificationRepository();
     }
 
-    public function create(int $livreurId, int $commandeId, float $prix, DateTime $dure, int $vehiculeId/*, array $options=[]*/) : int
+    public function createOffre(int $livreurId, int $commandeId, float $prix, DateTime $dure, int $vehiculeId/*, array $options=[]*/) : int
     {
-            return $this->create($livreurId, $commandeId, $prix, $dure, $vehiculeId);
+        validator::validateExistingLivreur($livreurId, DatabaseConnect::getConnexion());
+        validator::validateExistingCommande($commandeId, DatabaseConnect::getConnexion());
+        $commande = $this->commandeRepo->findById($commandeId);
+        if($commande['etat'] !== "Crée" AND $commande['etat'] !== "En_attente"){
+            throw new validationException("Accès refusé à cette commande");
+        }
+        $offre = $this->offreRepo->findByLivreurId($livreurId);
+        if($offre){
+            throw new validationException(" déjà une offre du même livreur");
+        }
+
+        validator::validateDateTime($dure);
+        validator::validateExistingVehicule($vehiculeId, DatabaseConnect::getConnexion());
+        $idOffre = $this->offreRepo->save($livreurId, $commandeId, $prix, $dure, $vehiculeId, 'En_attente');
+        #$this->notifRepo->notifierClient
+        return $idOffre;
     }
 
-    public function getByCommande(int $commandeId) : array
+    public function getOffresByCommande(int $commandeId, string $role, ?int $livreurId = null) : array
     {
         validator::validateExistingCommande($commandeId);
-        return $this->repo->getByCommande($commandeId);
+        $offres = $this->offreRepo->findByCommandeId($commandeId);
+
+        if($role === 'livreur' && $livreurId !== null){
+           foreach ($offres as $offre){
+               if($offre['livreur_id'] !== $livreurId){
+                   $offre['prix'] = null;
+               }
+           }
+        }
+        return $offres;
     }
 
-    public function getByLivreur(int $livreurId) : array
+    public function getOffresByLivreur(int $livreurId) : array
     {
-
+        validator::validateExistingLivreur($livreurId, DatabaseConnect::getConnexion());
+        $mesOffres = $this->offreRepo->findByLivreurId($livreurId);
+        return $mesOffres;
     }
-
-    public function accept(int $offreId) : bool
-    {
-
-    }
-
 }

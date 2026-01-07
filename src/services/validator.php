@@ -85,6 +85,14 @@ class validator
             throw new validationException("commande inexistant");
         }
     }
+    public static function validateExistingOffre(int $id, $pdo) : void
+    {
+        $stmt = $pdo->prepare("SELECT id FROM offres WHERE id = ?");
+        $stmt->execute([$id]);
+        if(!$stmt->fetch()){
+            throw new validationException("offre inexistant");
+        }
+    }
 
     public static function validateExistingVehicule(int $id, $pdo) : void
     {

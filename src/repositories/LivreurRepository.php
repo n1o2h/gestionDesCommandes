@@ -58,4 +58,8 @@ class LivreurRepository
         $stmt = $pdo->prepare($sql);
         return $stmt->execute([$nouveauNote, $id]);
     }
+
+    public function getNoteMoyenne(int $livreurId)
+    {
+    }
 }
